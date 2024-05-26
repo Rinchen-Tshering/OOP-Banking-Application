@@ -1,3 +1,14 @@
+######################################################
+#Rinchen Tshering
+#First Year Electronics and communication Engineering (1ECE)
+#02230104
+######################################################
+#Refrences 
+#https://youtu.be/tJxcKyFMTGo?si=Wunl2JSweuQVY6EV
+#https://youtu.be/HkLhYKp8YfE?si=dC3RGuVABIzXCQI_
+#https://youtu.be/rq8cL2XMM5M?si=C6B-UDnbnTo8yVIK 
+######################################################
+
 import random  # Importing the random module for generating random account numbers and passwords
 import os  # Importing the os module for file operations
 
