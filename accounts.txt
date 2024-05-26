@@ -1,2 +1,3 @@
-{'account_number': '2087595204', 'password': '7228', 'account_type': 'Personal', 'balance': 9100.0}
-{'account_number': '1195474173', 'password': '9471', 'account_type': 'Personal', 'balance': 900.0}
+{'account_number': '8963267590', 'password': '1430', 'account_type': 'Personal', 'balance': 43000.0}
+{'account_number': '2398814565', 'password': '5857', 'account_type': 'Personal', 'balance': 1000.0}
+{'account_number': '8739827251', 'password': '6249', 'account_type': 'Personal', 'balance': 6000.0}

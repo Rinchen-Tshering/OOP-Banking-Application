@@ -1,21 +1,25 @@
-import random
-import os
+import random  # Importing the random module for generating random account numbers and passwords
+import os  # Importing the os module for file operations
 
 class Account:
+    # Initialize an account with account number, type, and balance
     def __init__(self, account_number, account_type, balance=0):
         self.account_number = account_number
-        self.password = self.generate_password()
+        self.password = self.generate_password()  # Generate a default password
         self.account_type = account_type
         self.balance = balance
 
+    # using static method to generate a random account number
     @staticmethod
     def generate_account_number():
         return str(random.randint(1000000000, 9999999999))
 
+    # using static method to generate a random password
     @staticmethod
     def generate_password():
         return str(random.randint(1000, 9999))
 
+    # Deposit an amount into the account
     def deposit(self, amount):
         if amount > 0:
             self.balance += amount
@@ -23,6 +27,7 @@ class Account:
         else:
             print("Deposit amount must be positive.")
 
+    # Withdraw an amount from the account
     def withdraw(self, amount):
         if 0 < amount <= self.balance:
             self.balance -= amount
@@ -30,9 +35,11 @@ class Account:
         else:
             print("Insufficient funds or invalid amount.")
 
+    # Check the current balance
     def check_balance(self):
         print(f"Current balance: {self.balance}")
 
+    # Convert account details to a dictionary format
     def to_dict(self):
         return {
             "account_number": self.account_number,
@@ -41,21 +48,24 @@ class Account:
             "balance": self.balance
         }
 
+# Create a subclass for BusinessAccount
 class BusinessAccount(Account):
     def __init__(self, account_number, balance=0):
         super().__init__(account_number, "Business", balance)
 
+# Create subclass for PersonalAccount
 class PersonalAccount(Account):
     def __init__(self, account_number, balance=0):
         super().__init__(account_number, "Personal", balance)
 
 class BankSystem:
     def __init__(self):
-        self.accounts = {}
-        self.load_accounts()
+        self.accounts = {}  # create a dictionary to store account information
+        self.load_accounts()  # Load existing accounts from file
 
+    # Method to load accounts from a file
     def load_accounts(self):
-        if os.path.exists("accounts.txt"):
+        if os.path.exists("accounts.txt"):  # Check if the file exists
             with open("accounts.txt", "r") as f:
                 for line in f:
                     account = eval(line.strip())
@@ -66,21 +76,24 @@ class BankSystem:
                     acc.password = account['password']
                     self.accounts[account['account_number']] = acc
 
+    # Save accounts to a file
     def save_accounts(self):
         with open("accounts.txt", "w") as f:
             for account in self.accounts.values():
                 f.write(str(account.to_dict()) + "\n")
 
+    # Create a new account
     def create_account(self, account_type):
-        account_number = Account.generate_account_number()
+        account_number = Account.generate_account_number()  # Generate a new account number
         if account_type == "Business":
             new_account = BusinessAccount(account_number)
         else:
             new_account = PersonalAccount(account_number)
-        self.accounts[account_number] = new_account
-        self.save_accounts()
+        self.accounts[account_number] = new_account  # Add the new account to the dictionary
+        self.save_accounts()  # Save the updated accounts to the file
         print(f"Account created successfully! Account Number: {account_number}, Password: {new_account.password}")
 
+    # Method to log in to an existing account
     def login(self, account_number, password):
         if account_number in self.accounts and self.accounts[account_number].password == password:
             print("Login successful.")
@@ -89,6 +102,7 @@ class BankSystem:
             print("Invalid account number or password.")
             return None
 
+    # Method to delete an account
     def delete_account(self, account_number):
         if account_number in self.accounts:
             del self.accounts[account_number]
@@ -97,6 +111,7 @@ class BankSystem:
         else:
             print("Account not found.")
 
+    # Method to transfer money between accounts
     def transfer_money(self, from_account, to_account_number, amount):
         if from_account.balance >= amount:
             if to_account_number in self.accounts:
@@ -111,7 +126,7 @@ class BankSystem:
             print("Insufficient funds.")
 
 def main():
-    bank_system = BankSystem()
+    bank_system = BankSystem()  # Create an instance of BankSystem
 
     while True:
         print("\n1. Create Account\n2. Login\n3. Exit")
@@ -119,12 +134,12 @@ def main():
 
         if choice == "1":
             account_type = input("Enter account type (Personal/Business): ")
-            bank_system.create_account(account_type)
+            bank_system.create_account(account_type)  # Create a new account
 
         elif choice == "2":
             account_number = input("Enter account number: ")
             password = input("Enter password: ")
-            account = bank_system.login(account_number, password)
+            account = bank_system.login(account_number, password)  # Log in to an existing account
             if account:
                 while True:
                     print("\n1. Deposit\n2. Withdraw\n3. Check Balance\n4. Transfer Money\n5. Delete Account\n6. Logout")
@@ -132,26 +147,26 @@ def main():
 
                     if choice == "1":
                         amount = float(input("Enter amount to deposit: "))
-                        account.deposit(amount)
+                        account.deposit(amount)  # Deposit money
 
                     elif choice == "2":
                         amount = float(input("Enter amount to withdraw: "))
-                        account.withdraw(amount)
+                        account.withdraw(amount)  # Withdraw money
 
                     elif choice == "3":
-                        account.check_balance()
+                        account.check_balance()  # Check balance
 
                     elif choice == "4":
                         to_account_number = input("Enter receiving account number: ")
                         amount = float(input("Enter amount to transfer: "))
-                        bank_system.transfer_money(account, to_account_number, amount)
+                        bank_system.transfer_money(account, to_account_number, amount)  # Transfer money
 
                     elif choice == "5":
-                        bank_system.delete_account(account.account_number)
+                        bank_system.delete_account(account.account_number)  # Delete account
                         break
 
                     elif choice == "6":
-                        print("Logged out successfully")
+                        print("logged out successfully")
                         break
 
         elif choice == "3":
